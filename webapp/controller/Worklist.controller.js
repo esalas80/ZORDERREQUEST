@@ -413,14 +413,28 @@ sap.ui.define([
                 success: function(oData, response) {
                     sap.ui.core.BusyIndicator.hide();
                     var data = response.data
-                    
-                        MessageBox.success("la operación se realizó con exito", {
+                        //Type(E)= "Error", Type(S)= Succes
+                        //Message = Mensage Personalizado
+                        
+                    if(data.Type === "S"){
+                        var mensage =  data.Message !== "" ? data.Message : "Operación realizada con exito";
+                        MessageBox.success(mensage, {
                             icon: MessageBox.Icon.SUCCESS,
                             title: title,
                             onClose: function(){
                                 that.onGetInitialData();
                             }
                         });
+                    }else{
+                        var mensage =  data.Message !== "" ? data.Message : "Error al realizar la operación";
+                        MessageBox.error(mensage, {
+                            icon: MessageBox.Icon.ERROR,
+                            title: title,
+                            onClose: function(){
+                                that.onGetInitialData();
+                            }
+                        });
+                    }   
                 },
                 error: function(oData, response) {
                     sap.ui.core.BusyIndicator.hide();

@@ -142,6 +142,10 @@
 									<m:VBox>
 										<m:Label text="{objectView>/Ekgrp}" design="Bold"/>
 									</m:VBox>
+									<m:Label text="{i18n>CentCost} "  width="auto" textAlign="End" />
+									<m:VBox>
+										<m:Label text="{objectView>/Kostl}" design="Bold"/>
+									</m:VBox>
 								</layout:VerticalLayout>
 								
 							</m:FlexBox>
