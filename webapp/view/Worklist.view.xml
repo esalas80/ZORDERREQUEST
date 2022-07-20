@@ -1,0 +1,320 @@
+<mvc:View
+    controllerName="zorder.request.zorderrequest.controller.Worklist"
+    xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:semantic="sap.m.semantic"
+    xmlns:l="sap.ui.layout"
+    xmlns:f="sap.ui.layout.form">
+    <SplitContainer>
+        <masterPages>
+            <semantic:MasterPage title="Solicitudes de Pedido">
+				<semantic:landmarkInfo>
+					<PageAccessibleLandmarkInfo rootLabel="Root label" headerLabel="Header label" footerLabel="Footer label"></PageAccessibleLandmarkInfo>
+				</semantic:landmarkInfo>
+				<semantic:content>
+                    <List
+                        id="list"
+                        width="auto"
+                        class="sapFDynamicPageAlignContent"
+                        mode="SingleSelectMaster"
+                        items="{
+                            path: 'ListModel>/',
+                            sorter: { path: 'Banfn', descending: true},
+                            groupHeaderFactory: '.createGroupHeader'
+                        }"
+                        headerText="{worklistView>/title}"
+                        busyIndicatorDelay="{listView>/delay}"
+                        noDataText="{listView>/noDataText}"
+                        growing="true"
+                        growingScrollToLoad="true"
+                        updateFinished=".onUpdateFinished"
+                        selectionChange=".onSelectionChange">
+                        <headerToolbar>
+                            <OverflowToolbar>
+                                <SearchField
+                                    id="searchField"
+                                    tooltip="{i18n>listSearchTooltip}"
+                                    search=".onSearch"
+                                    width="auto">
+                                    <layoutData>
+                                        <OverflowToolbarLayoutData
+                                            minWidth="150px"
+                                            maxWidth="240px"
+                                            shrinkable="true"
+                                            priority="NeverOverflow"/>
+                                    </layoutData>
+                                </SearchField>
+                                <ToolbarSpacer/>
+                            </OverflowToolbar>
+                        </headerToolbar>
+                        <ObjectListItem
+                            
+                            title="{ListModel>Banfn}"
+                            type="Active"
+                            press=".onSelectionChange"
+                            number="{
+                                parts:[{path:'ListModel>Rlwrt'},{path:'ListModel>Waers'}],
+                                type: 'sap.ui.model.type.Currency',
+                                formatOptions: {showMeasure: false}
+                            }"
+                            numberUnit="{ListModel>Waers}">
+                            <attributes>
+                                <ObjectAttribute id="UserName" text="{ListModel>Ernam}" />
+                                <ObjectAttribute id="date" text="{path : 'ListModel>Erdat', type: 'sap.ui.model.odata.type.DateTime' , formatOptions: { pattern: 'dd-MM-yyyy', UTC: true } }" />
+                                <ObjectAttribute id="Pos"  text="Items: {ListModel>Posiciones}" />
+                            </attributes>
+                        </ObjectListItem>
+                    </List>
+                                
+                </semantic:content>
+			</semantic:MasterPage>
+        </masterPages>
+        <detailPages>
+			<semantic:DetailPage title="Detalle de Solicitud de Pedido">
+              
+                <semantic:content>
+                    <l:BlockLayout background="Mixed" >
+                        <l:BlockLayoutRow scrollable="false">
+                            <l:BlockLayoutCell   backgroundColorSet="ColorSet6" backgroundColorShade="ShadeE" >
+                                <FlexBox>
+                                    <l:VerticalLayout class="sapUiResponsiveContentPadding">
+                                        <Label text="{i18n>Pedido}" design="Bold" width="auto" textAlign="End" />
+                                        <VBox>
+                                            <Text id="txtNroOrden" text="{orderModel>/Banfn}" width="auto" maxLines="3" wrapping="false"/>	
+                                        </VBox>
+                                         <Label text="{i18n>Fec}" design="Bold" width="auto" textAlign="End" />
+                                        <Text text="{path : 'orderModel>/Erdat', type: 'sap.ui.model.odata.type.DateTime' , formatOptions: { pattern: 'dd-MM-yyyy', UTC: true } }"/>	
+                                    </l:VerticalLayout>    
+                                   
+                                    
+                                </FlexBox>
+                            </l:BlockLayoutCell>
+                            <l:BlockLayoutCell>
+                                <FlexBox>
+                                 <l:VerticalLayout class="sapUiResponsiveContentPadding" width="600px">    
+                                        <Label text="{i18n>Imp}" design="Bold" width="auto" textAlign="End" />
+                                        <VBox>
+                                            <Text text="{path: 'orderModel>/Rlwrt', type: 'sap.ui.model.type.Float', formatOptions: { minFractionDigits: 2, maxFractionDigits: 2, groupingSeparator: ',', decimalSeparator: '.' } } {orderModel>/Waers}"  textAlign="End" wrapping="false" />
+                                        </VBox>
+                                    </l:VerticalLayout>    
+                              </FlexBox>  
+                            </l:BlockLayoutCell>
+                        </l:BlockLayoutRow>
+                    </l:BlockLayout>
+                    <l:VerticalLayout width="100%">
+                        <IconTabBar
+                            id="iconTabBar"
+                            headerBackgroundDesign="Transparent"
+                            select=".onTabSelect"
+                            selectedKey="{detailView>/selectedTab}">
+                            <items>
+                                <IconTabFilter
+                                    id="iconTabFilterShipping"
+                                    icon="sap-icon://message-information"
+                                    tooltip="{i18n>detailIconTabBarInfo}"
+                                    key="Items">
+                                    <content>
+
+                                        <Table
+                                            id="lineItemsList"
+                                            class="sapUiSmallMarginTop"
+                                            width="auto"
+                                            mode="SingleSelectMaster"
+                                            selectionChange="handleSelectionChange"
+                                            items="{path: 'ListdetailModel>/'}"
+                                            noDataText="{i18n>noDataRequest}"
+                                            busyIndicatorDelay="{detailView>/lineItemTableDelay}">
+                                            <headerToolbar>
+                                                <Toolbar id="lineItemsToolbar">
+                                                    <Title
+                                                        id="lineItemsHeader"
+                                                        text="Items"/>
+                                                </Toolbar>
+                                            </headerToolbar>
+                                            <columns>
+                                                 <Column>
+                                                    <Text text="{i18n>Pos}"/>
+                                                </Column>
+                                                <Column>
+                                                    <Text text="{i18n>Plant}"/>
+                                                </Column>
+                                                <Column>
+                                                    <Text text="{i18n>Almacen}"/>
+                                                </Column>
+                                                <Column >
+                                                    <Text text="{i18n>NoMat}"/>
+                                                </Column>
+                                                <Column>
+                                                    <Text text="{i18n>DescMat}"/>
+                                                </Column>
+                                                <Column>
+                                                    <Text text="{i18n>Imp}"/>
+                                                </Column>
+                                                <Column>
+                                                    <Text text="{i18n>Quantity}"/>
+                                                </Column>
+                                                 <Column>
+                                                    <Text text="{i18n>FecEnt}"/>
+                                                </Column>
+                                                <Column>
+                                                    <Text text="{i18n>FecPed}"/>
+                                                </Column>
+                                            </columns>
+                                            <items>
+                                                <ColumnListItem  type="Navigation" press=".onPress">
+                                                    <cells>
+                                                        <ObjectAttribute
+                                                             text="{ListdetailModel>Bnfpo}"/>
+                                                        <ObjectAttribute
+                                                             text="{ListdetailModel>Werks}"/>     
+                                                        <ObjectAttribute
+                                                            text="{ListdetailModel>Lgort}"/>
+                                                        <ObjectIdentifier
+                                                           text="{ListdetailModel>Matnr}"/>  
+                                                        <ObjectIdentifier
+                                                            text="{ListdetailModel>Txz01}"/>   
+                                                        <ObjectNumber
+                                                            number="{
+                                                                path: 'ListdetailModel>Rlwrt',
+                                                                formatter: '.formatter.currencyValue'
+                                                            }"
+                                                            unit="{ListdetailModel>Waers}"/>
+                                                       
+                                                        <ObjectNumber
+                                                            number="{
+                                                                path: 'ListdetailModel>Menge'
+                                                            }"
+                                                            unit="{ListdetailModel>Meins}"/>
+                                                        <ObjectIdentifier
+                                                            text="{path : 'ListdetailModel>Lfdat', type: 'sap.ui.model.odata.type.DateTime' , formatOptions: { pattern: 'dd-MM-yyyy', UTC: true } }"/>
+                                                        <ObjectIdentifier
+                                                            text="{path : 'ListdetailModel>Badat', type: 'sap.ui.model.odata.type.DateTime' , formatOptions: { pattern: 'dd-MM-yyyy', UTC: true } }"/>
+                                                    </cells>
+                                                </ColumnListItem>
+                                            </items>
+                                        </Table>
+                                    </content>
+                                </IconTabFilter>
+                                <IconTabFilter
+                                    id="iconTabFilterAttach"
+                                    icon="sap-icon://attachment"
+                                    tooltip="{i18n>detailIconTabBarAttachments}"
+                                    
+                                    key="attach">
+                                    <content >
+                                        <List
+                                            id="ShortAttachments"
+                                            headerText="Adjuntos"
+                                            items="{path: 'ListAttachModel>/'}"
+                                            noDataText="{i18n>noDataRequest}">
+                                            <items>
+                                                <StandardListItem 	
+                                                    title="{ListAttachModel>Banfn}"
+                                                    description="{ListAttachModel>ObjType}"
+                                                    icon="{ListAttachModel>Icon}"
+                                                    iconDensityAware="false"
+                                                    iconInset="false"
+                                                    type="Navigation"
+                                                    press="handleSelectionAttach"/>
+                                            </items>
+                                        </List>
+                                    </content>
+                                </IconTabFilter>
+                            </items>
+                        </IconTabBar>
+                        
+                    </l:VerticalLayout>
+                </semantic:content>
+                <semantic:positiveAction>
+                    <semantic:PositiveAction text="Aprovar" press="onPressAction(1)"/>
+                </semantic:positiveAction>
+                <semantic:negativeAction>
+                    <semantic:NegativeAction text="Rechazar" press="onPressAction(0)"/>
+                </semantic:negativeAction>
+			</semantic:DetailPage>
+
+		</detailPages>
+    </SplitContainer>
+    <!-- <semantic:SemanticPage
+        id="page"
+        headerPinnable="false"
+        toggleHeaderOnTitleClick="false">
+
+        <semantic:titleHeading>
+            <Title
+                text="{i18n>worklistTitle}"
+                level="H2"/>
+        </semantic:titleHeading>
+
+        <semantic:content>
+            <Table
+                id="table"
+                width="auto"
+                items="{
+                    path: '/headerSet',
+                     filters : [ { path : 'Uname', operator : 'EQ', value1 : 'EXT_JORGE'} ],
+                    sorter: {
+                        path: 'Banfn',
+                        descending: false
+                    }
+                }"
+                noDataText="{worklistView>/tableNoDataText}"
+                busyIndicatorDelay="{worklistView>/tableBusyDelay}"
+                growing="true"
+                growingScrollToLoad="true"
+                updateFinished=".onUpdateFinished">
+
+                <headerToolbar>
+                    <OverflowToolbar>
+                        <Title
+                            id="tableHeader"
+                            text="{worklistView>/worklistTableTitle}"
+                            level="H3"/>
+                        <ToolbarSpacer />
+                        <SearchField
+                            id="searchField"
+                            tooltip="{i18n>worklistSearchTooltip}"
+                            search=".onSearch">
+                            <layoutData>
+                                <OverflowToolbarLayoutData
+                                    maxWidth="200px"
+                                    priority="NeverOverflow"/>
+                            </layoutData>
+                        </SearchField>
+                    </OverflowToolbar>
+                </headerToolbar>
+
+                <columns>
+                    <Column id="nameColumn">
+                        <Text text="{i18n>tableNameColumnTitle}" id="nameColumnTitle"/>
+                    </Column>
+                    <Column id="unitNumberColumn" hAlign="End">
+                        <Text text="{i18n>tableUnitNumberColumnTitle}" id="unitNumberColumnTitle"/>
+                    </Column>
+                </columns>
+
+                <items>
+                    <ColumnListItem
+                        type="Navigation"
+                        press=".onPress">
+                        <cells>
+                            <ObjectIdentifier
+                                title="{Banfn}"/>
+                            <ObjectNumber
+                                number="{
+                                    path: 'Rlwrt',
+                                    formatter: '.formatter.numberUnit'
+                                }"
+                                unit="{Waers}" />
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </semantic:content>
+
+        
+
+    </semantic:SemanticPage> -->
+
+</mvc:View>

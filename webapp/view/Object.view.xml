@@ -1,0 +1,154 @@
+<mvc:View
+    controllerName="zorder.request.zorderrequest.controller.Object"
+    xmlns:m="sap.m"
+     xmlns="sap.uxap"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:t="sap.ui.table"
+    xmlns:u="sap.ui.unified"
+    xmlns:semantic="sap.f.semantic"
+	xmlns:form="sap.ui.layout.form" 
+	xmlns:layout="sap.ui.layout">
+     <ObjectPageLayout
+        showTitleInHeaderContent="true"
+		useIconTabBar="true"
+		upperCaseAnchorBar="false">
+        <headerTitle>
+            	<ObjectPageDynamicHeaderTitle>
+                    <expandedHeading>
+                        <m:Title id="pageTitle" text="{i18n>expandTitle}" wrapping="true"/>
+                    </expandedHeading>
+                    <snappedHeading>
+                        <m:FlexBox fitContainer="true" alignItems="Center">
+                            <!-- <m:Avatar src="./test-resources/sap/uxap/images/imageID_275314.png" class="sapUiTinyMarginEnd"/>
+                            <m:Title text="Denise Smith" wrapping="true" /> -->
+                             <m:Title id="snappedTitle" text="{i18n>expandTitle}" wrapping="true"/>
+                        </m:FlexBox>
+                    </snappedHeading>
+                   
+
+                    <!-- <actions>
+                        <m:Button text="Edit" type="Emphasized"/>
+                        <m:Button type="Transparent" text="Delete"/>
+                        <m:Button type="Transparent" text="Copy"/>
+                        <m:OverflowToolbarButton icon="sap-icon://action" type="Transparent" text="Share" tooltip="action"/>
+                    </actions> -->
+                </ObjectPageDynamicHeaderTitle>
+        </headerTitle>
+        <headerContent>
+			
+				<layout:BlockLayout background="Mixed" visible="true">
+					<layout:BlockLayoutRow scrollable="false">
+						<layout:BlockLayoutCell   backgroundColorSet="ColorSet6" backgroundColorShade="ShadeE">
+							<m:FlexBox wrap="Wrap" fitContainer="true" >
+								<layout:VerticalLayout class="sapUiResponsiveContentPadding">
+									<m:Label text="{i18n>Pedido}"  width="auto"/>
+									<m:VBox>
+										<m:Label text="{objectView>/Banfn}" design="Bold" width="auto"/>
+									</m:VBox>
+
+									<m:Label text="{i18n>Pos}"  width="auto"/>
+									<m:VBox>
+										<m:Label text="{objectView>/Bnfpo}" design="Bold" width="auto"/>
+									</m:VBox>
+								</layout:VerticalLayout>
+
+								<layout:VerticalLayout class="sapUiResponsiveContentPadding">
+									<m:Label text="{i18n>NroMat}" />
+									<m:VBox>
+										<m:Label text="{objectView>/Matnr}" design="Bold"/>
+									</m:VBox>
+									<m:Label text="{i18n>Mat}" />
+									<m:VBox>
+										<m:Label text="{objectView>/Txz01}" design="Bold"/>
+									</m:VBox>
+								</layout:VerticalLayout>
+                                <layout:VerticalLayout class="sapUiResponsiveContentPadding">
+									<m:Label text="{i18n>Plant}" />
+									<m:VBox>
+										<m:Label text="{objectView>/Werks}" design="Bold"/>
+									</m:VBox>
+									<m:Label text="{i18n>Almacen}" />
+									<m:VBox>
+										<m:Label text="{objectView>/Lgort}" design="Bold"/>
+									</m:VBox>
+								</layout:VerticalLayout>
+
+								<layout:VerticalLayout class="sapUiResponsiveContentPadding">
+									<m:Label text="{i18n>Imp} "  width="auto" textAlign="End" />
+									<m:VBox>
+										<m:Label text="{objectView>/Rlwrt}" design="Bold" />
+									</m:VBox>
+
+									<m:Label text="{i18n>Curr}" />
+									<m:VBox>
+										<m:Label text="{objectView>/Waers}" design="Bold"/>
+									</m:VBox>
+								</layout:VerticalLayout>
+
+                                <layout:VerticalLayout class="sapUiResponsiveContentPadding">
+									<m:Label text="{i18n>Quantity} "  width="auto" textAlign="End" />
+									<m:VBox>
+										<m:Label text="{objectView>/Menge}" design="Bold"/>
+									</m:VBox>
+                                    <m:Label text="{i18n>UnitMed} "  width="auto" textAlign="End" />
+									<m:VBox>
+										<m:Label text="{objectView>/Meins}" design="Bold"/>
+									</m:VBox>
+								</layout:VerticalLayout>
+
+								<layout:VerticalLayout class="sapUiResponsiveContentPadding">
+									<m:Label text="{i18n>FecEnt} "  width="auto" textAlign="End"/>
+									<m:VBox>
+										<m:Label text="{path : 'objectView>/Lfdat', type: 'sap.ui.model.odata.type.DateTime' , formatOptions: { pattern: 'dd-MM-yyyy', UTC: true } }" design="Bold"/>
+									</m:VBox>
+									<m:Label text="{i18n>FecPed} "  width="auto" textAlign="End"  />
+									<m:VBox>
+										<m:Label text="{path : 'objectView>/Badat', type: 'sap.ui.model.odata.type.DateTime' , formatOptions: { pattern: 'dd-MM-yyyy', UTC: true } }" design="Bold"/>
+									</m:VBox>
+								</layout:VerticalLayout>
+								<layout:VerticalLayout class="sapUiResponsiveContentPadding">
+									<m:Label text="{i18n>Act1} "  width="auto" textAlign="End" />
+									<m:VBox>
+										<m:Label text="{objectView>/Anln1}" design="Bold"/>
+									</m:VBox>
+
+									<m:Label text="{i18n>Act2} "  width="auto" textAlign="End" />
+									<m:VBox>
+										<m:Label text="{objectView>/Anln2}" design="Bold"/>
+									</m:VBox>
+								</layout:VerticalLayout>
+								<layout:VerticalLayout class="sapUiResponsiveContentPadding">
+									<m:Label text="{i18n>NroCta} "  width="auto" textAlign="End" />
+									<m:VBox>
+										<m:Label text="{objectView>/Sakto}" design="Bold"/>
+									</m:VBox>
+                                    <m:Label text="{i18n>RegCom} "  width="auto" textAlign="End" />
+									<m:VBox>
+										<m:Label text="{objectView>/Infnr}" design="Bold"/>
+									</m:VBox>
+								</layout:VerticalLayout>
+                                <layout:VerticalLayout class="sapUiResponsiveContentPadding">
+									<m:Label text="{i18n>Sol} "  width="auto" textAlign="End" />
+									<m:VBox>
+										<m:Label text="{objectView>/Afnam}" design="Bold"/>
+									</m:VBox>
+                                    <m:Label text="{i18n>OrgCom} "  width="auto" textAlign="End" />
+									<m:VBox>
+										<m:Label text="{objectView>/Ekorg}" design="Bold"/>
+									</m:VBox>
+								</layout:VerticalLayout>
+                                <layout:VerticalLayout class="sapUiResponsiveContentPadding">
+									<m:Label text="{i18n>GpoCom} "  width="auto" textAlign="End" />
+									<m:VBox>
+										<m:Label text="{objectView>/Ekgrp}" design="Bold"/>
+									</m:VBox>
+								</layout:VerticalLayout>
+								
+							</m:FlexBox>
+						</layout:BlockLayoutCell> 
+					</layout:BlockLayoutRow>
+				</layout:BlockLayout>
+			
+		</headerContent>
+     </ObjectPageLayout>
+</mvc:View>
