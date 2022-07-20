@@ -81,7 +81,6 @@
                                     binding="{orderModel>/}"
                                     title="{orderModel>Banfn}"
                                     titleActive="true"
-                                    titlePress="handleTitlePress"
                                     number="{
                                         parts:[{path:'orderModel>Rlwrt'},{path:'orderModel>Waers'}],
                                         type: 'sap.ui.model.type.Currency',
@@ -91,8 +90,12 @@
                                     class="sapUiResponsivePadding--header" >
                                     <ObjectAttribute title="Usuario" text="{orderModel>/Ernam}" />
                                     <ObjectAttribute title="Usuario SAP" text="{orderModel>/Uname}" />
-                                    <ObjectAttribute title="Fecha" text="{path : 'orderModel>/Erdat', type: 'sap.ui.model.odata.type.DateTime' , formatOptions: { pattern: 'dd-MM-yyyy', UTC: true } }" />
-                                    
+                                    <ObjectAttribute title="Fecha Solicitud" text="{path : 'orderModel>/Erdat', type: 'sap.ui.model.odata.type.DateTime' , formatOptions: { pattern: 'dd-MM-yyyy', UTC: true } }" />
+                                    <ObjectAttribute title="Tipo Documento" text="{orderModel>/Bsart}" />
+                                    <!-- Pendiente Fecha de modificacion  
+                                        Pendiente  modificado por
+                                        Pendiente  modificado el 
+                                    -->
                                 </ObjectHeader>
                                 
                                 
