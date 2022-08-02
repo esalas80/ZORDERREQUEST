@@ -7,7 +7,6 @@
 |**Generation Platform**<br>Visual Studio Code|
 |**Floorplan Used**<br>1worklist|
 |**Service Type**<br>SAP System (ABAP On Premise)|
-|**Service URL**<br>http://10.65.67.3:8000//sap/opu/odata/sap/ZPP_MY_INBOX_SRV
 |**Module Name**<br>zorderrequest|
 |**Application Title**<br>Solicitudes de Pedido|
 |**Namespace**<br>zorder.request|

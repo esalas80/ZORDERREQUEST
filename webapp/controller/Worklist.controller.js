@@ -423,6 +423,15 @@ sap.ui.define([
                             title: title,
                             onClose: function(){
                                 that.onGetInitialData();
+                                debugger
+                                var ordermodel = that.getView().getModel("orderModel");
+                                ordermodel.setData({modelData:{}});
+                                ordermodel.updateBindings(true);
+                                var modeldetail = that.getView().getModel("ListdetailModel");
+                                modeldetail.setData({modelData:{}});
+                                modeldetail.updateBindings(true);
+                                var tab = that.getView().byId("iconTabBar").getSelectedKey()
+                                if(tab==="attach") that.getView().byId("iconTabBar").setSelectedKey("Items");
                             }
                         });
                     }else{
@@ -432,6 +441,14 @@ sap.ui.define([
                             title: title,
                             onClose: function(){
                                 that.onGetInitialData();
+                                var ordermodel = that.getView().getModel("orderModel");
+                                ordermodel.setData({modelData:{}});
+                                ordermodel.updateBindings(true);
+                                var modeldetail = that.getView().getModel("ListdetailModel");
+                                modeldetail.setData({modelData:{}});
+                                modeldetail.updateBindings(true);
+                                var tab = that.getView().byId("iconTabBar").getSelectedKey()
+                                if(tab==="attach") that.getView().byId("iconTabBar").setSelectedKey("Items");
                             }
                         });
                     }   

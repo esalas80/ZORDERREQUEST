@@ -71,8 +71,8 @@ sap.ui.define([
             var oViewModel = this.getModel("objectView");
             oViewModel.setProperty("/busy", false);
             var dataDetail = sap.ui.getCore().getModel("OderDetail").getData();
-            this.byId("pageTitle").setText(i18n.getText("expandTitle", [dataDetail.Banfn, dataDetail.Txz01]))
-            //this.byId("snappedTitle").setText(i18n.getText("expandTitle", [dataDetail.Banfn, dataDetail.Txz01]))
+            this.byId("pageTitle").setText(i18n.getText("expandTitle", [dataDetail.Banfn, dataDetail.Txz01, dataDetail.Bnfpo]))
+            this.byId("snappedTitle").setText(i18n.getText("expandTitle", [dataDetail.Banfn, dataDetail.Txz01, dataDetail.Bnfpo]))
             oViewModel.setData(dataDetail);
             console.log(dataDetail)
         }

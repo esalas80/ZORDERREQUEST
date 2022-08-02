@@ -39,120 +39,145 @@
 				<layout:BlockLayout background="Mixed" visible="true">
 					<layout:BlockLayoutRow scrollable="false">
 						<layout:BlockLayoutCell   backgroundColorSet="ColorSet6" backgroundColorShade="ShadeE">
-							<m:FlexBox wrap="Wrap" fitContainer="true" >
-								<layout:VerticalLayout class="sapUiResponsiveContentPadding">
-									<m:Label text="{i18n>Pedido}"  width="auto"/>
-									<m:VBox>
-										<m:Label text="{objectView>/Banfn}" design="Bold" width="auto"/>
-									</m:VBox>
-
-									<m:Label text="{i18n>Pos}"  width="auto"/>
-									<m:VBox>
-										<m:Label text="{objectView>/Bnfpo}" design="Bold" width="auto"/>
-									</m:VBox>
-								</layout:VerticalLayout>
-
+							<m:FlexBox  fitContainer="true" >
 								<layout:VerticalLayout class="sapUiResponsiveContentPadding">
 									<m:Label text="{i18n>NroMat}" />
 									<m:VBox>
 										<m:Label text="{objectView>/Matnr}" design="Bold"/>
 									</m:VBox>
-									<m:Label text="{i18n>Mat}" />
+									<m:Label text="{i18n>Almacen}" />
+									<m:VBox>
+										<m:Label text="{objectView>/Lgort} - {objectView>/Lgobe}" design="Bold"/>
+									</m:VBox>
+								</layout:VerticalLayout>
+
+                                <layout:VerticalLayout class="sapUiResponsiveContentPadding">
+									<m:Label text="{i18n>DescMat}" />
 									<m:VBox>
 										<m:Label text="{objectView>/Txz01}" design="Bold"/>
 									</m:VBox>
-								</layout:VerticalLayout>
-                                <layout:VerticalLayout class="sapUiResponsiveContentPadding">
 									<m:Label text="{i18n>Plant}" />
 									<m:VBox>
-										<m:Label text="{objectView>/Werks}" design="Bold"/>
+										<m:Label text="{objectView>/Werks} -{objectView>/NameWerks}" design="Bold"/>
 									</m:VBox>
-									<m:Label text="{i18n>Almacen}" />
+								</layout:VerticalLayout>
+
+								<layout:VerticalLayout class="sapUiResponsiveContentPadding">
+									<m:Label text="{i18n>Quantity} "  width="auto" textAlign="End" />
 									<m:VBox>
-										<m:Label text="{objectView>/Lgort}" design="Bold"/>
+										<m:Label text="{objectView>/Menge}" design="Bold"/>
+									</m:VBox>
+
+									<m:Label text="{i18n>FecPed} "  width="auto" textAlign="End"  />
+									<m:VBox>
+										<m:Label text="{path : 'objectView>/Badat', type: 'sap.ui.model.odata.type.DateTime' , formatOptions: { pattern: 'dd-MM-yyyy', UTC: true } }" design="Bold"/>
+									</m:VBox>
+								</layout:VerticalLayout>
+
+                                <layout:VerticalLayout class="sapUiResponsiveContentPadding">
+									<m:Label text="{i18n>UnitMed} "  width="auto" textAlign="End" />
+									<m:VBox>
+										<m:Label text="{objectView>/Meins}" design="Bold"/>
+									</m:VBox>
+
+									<m:Label text="{i18n>FecEnt} "  width="auto" textAlign="End"/>
+									<m:VBox>
+										<m:Label text="{path : 'objectView>/Lfdat', type: 'sap.ui.model.odata.type.DateTime' , formatOptions: { pattern: 'dd-MM-yyyy', UTC: true } }" design="Bold"/>
 									</m:VBox>
 								</layout:VerticalLayout>
 
 								<layout:VerticalLayout class="sapUiResponsiveContentPadding">
 									<m:Label text="{i18n>Imp} "  width="auto" textAlign="End" />
 									<m:VBox>
-										<m:Label text="{objectView>/Rlwrt}" design="Bold" />
+										<m:Label text="{path:'objectView>/Rlwrt', type: 'sap.ui.model.type.Float', formatOptions: { minFractionDigits: 2, maxFractionDigits: 2, groupingSeparator: ',', decimalSeparator: '.' }}" design="Bold" />
 									</m:VBox>
+									
+								</layout:VerticalLayout>
 
+								<layout:VerticalLayout class="sapUiResponsiveContentPadding">
 									<m:Label text="{i18n>Curr}" />
 									<m:VBox>
 										<m:Label text="{objectView>/Waers}" design="Bold"/>
 									</m:VBox>
-								</layout:VerticalLayout>
-
-                                <layout:VerticalLayout class="sapUiResponsiveContentPadding">
-									<m:Label text="{i18n>Quantity} "  width="auto" textAlign="End" />
+								</layout:VerticalLayout>		
+							</m:FlexBox>
+						</layout:BlockLayoutCell> 
+					</layout:BlockLayoutRow>
+				</layout:BlockLayout>
+				<layout:BlockLayout background="Mixed" visible="true">
+					<layout:BlockLayoutRow scrollable="false">
+						<layout:BlockLayoutCell   backgroundColorSet="ColorSet6" backgroundColorShade="ShadeE">
+							<m:FlexBox>
+								<layout:VerticalLayout class="sapUiResponsiveContentPadding">
+									<m:Label text="{i18n>Sol} "  width="auto" textAlign="End" />
 									<m:VBox>
-										<m:Label text="{objectView>/Menge}" design="Bold"/>
+										<m:Label text="{objectView>/Afnam}" design="Bold"/>
 									</m:VBox>
-                                    <m:Label text="{i18n>UnitMed} "  width="auto" textAlign="End" />
+									<m:Label text="{i18n>TipoIm} "  width="auto" textAlign="End" />
 									<m:VBox>
-										<m:Label text="{objectView>/Meins}" design="Bold"/>
+										<m:Label text="{objectView>/Knttp}" design="Bold"/>
 									</m:VBox>
+									
+																
 								</layout:VerticalLayout>
 
 								<layout:VerticalLayout class="sapUiResponsiveContentPadding">
-									<m:Label text="{i18n>FecEnt} "  width="auto" textAlign="End"/>
+									<m:Label text="{i18n>OrgCom} "  width="auto" textAlign="End" />
 									<m:VBox>
-										<m:Label text="{path : 'objectView>/Lfdat', type: 'sap.ui.model.odata.type.DateTime' , formatOptions: { pattern: 'dd-MM-yyyy', UTC: true } }" design="Bold"/>
+										<m:Label text="{objectView>/Ekorg}" design="Bold"/>
 									</m:VBox>
-									<m:Label text="{i18n>FecPed} "  width="auto" textAlign="End"  />
-									<m:VBox>
-										<m:Label text="{path : 'objectView>/Badat', type: 'sap.ui.model.odata.type.DateTime' , formatOptions: { pattern: 'dd-MM-yyyy', UTC: true } }" design="Bold"/>
-									</m:VBox>
-								</layout:VerticalLayout>
-								<layout:VerticalLayout class="sapUiResponsiveContentPadding">
 									<m:Label text="{i18n>Act1} "  width="auto" textAlign="End" />
 									<m:VBox>
 										<m:Label text="{objectView>/Anln1}" design="Bold"/>
 									</m:VBox>
-
+								</layout:VerticalLayout>
+					
+                                <layout:VerticalLayout class="sapUiResponsiveContentPadding">
+									<m:Label text="{i18n>GpoCom} "  width="auto" textAlign="End" />
+									<m:VBox>
+										<m:Label text="{objectView>/Ekgrp}" design="Bold"/>
+									</m:VBox>
 									<m:Label text="{i18n>Act2} "  width="auto" textAlign="End" />
 									<m:VBox>
 										<m:Label text="{objectView>/Anln2}" design="Bold"/>
 									</m:VBox>
 								</layout:VerticalLayout>
-								<layout:VerticalLayout class="sapUiResponsiveContentPadding">
-									<m:Label text="{i18n>NroCta} "  width="auto" textAlign="End" />
-									<m:VBox>
-										<m:Label text="{objectView>/Sakto}" design="Bold"/>
-									</m:VBox>
-                                    <m:Label text="{i18n>RegCom} "  width="auto" textAlign="End" />
+								
+                                <layout:VerticalLayout class="sapUiResponsiveContentPadding">
+									<m:Label text="{i18n>RegCom} "  width="auto" textAlign="End" />
 									<m:VBox>
 										<m:Label text="{objectView>/Infnr}" design="Bold"/>
 									</m:VBox>
+									<m:Label text="{i18n>CtaMayor} "  width="auto" textAlign="End" />
+									<m:VBox>
+										<m:Label text="{objectView>/Sakto}" design="Bold"/>
+									</m:VBox>	
 								</layout:VerticalLayout>
-                                <layout:VerticalLayout class="sapUiResponsiveContentPadding">
-									<m:Label text="{i18n>Sol} "  width="auto" textAlign="End" />
+
+								<layout:VerticalLayout class="sapUiResponsiveContentPadding">
+									<m:Label text=""  width="auto" textAlign="End" />
 									<m:VBox>
-										<m:Label text="{objectView>/Afnam}" design="Bold"/>
-									</m:VBox>
-                                    <m:Label text="{i18n>OrgCom} "  width="auto" textAlign="End" />
-									<m:VBox>
-										<m:Label text="{objectView>/Ekorg}" design="Bold"/>
-									</m:VBox>
-								</layout:VerticalLayout>
-                                <layout:VerticalLayout class="sapUiResponsiveContentPadding">
-									<m:Label text="{i18n>GpoCom} "  width="auto" textAlign="End" />
-									<m:VBox>
-										<m:Label text="{objectView>/Ekgrp}" design="Bold"/>
+										<m:Label text="" design="Bold"/>
 									</m:VBox>
 									<m:Label text="{i18n>CentCost} "  width="auto" textAlign="End" />
 									<m:VBox>
 										<m:Label text="{objectView>/Kostl}" design="Bold"/>
 									</m:VBox>
 								</layout:VerticalLayout>
-								
-							</m:FlexBox>
-						</layout:BlockLayoutCell> 
+							</m:FlexBox>	
+						</layout:BlockLayoutCell>
 					</layout:BlockLayoutRow>
 				</layout:BlockLayout>
-			
+				<layout:BlockLayout background="Mixed" visible="true">
+					<layout:BlockLayoutRow scrollable="false">
+						<layout:BlockLayoutCell   backgroundColorSet="ColorSet6" backgroundColorShade="ShadeE">
+								<m:FlexBox>
+
+								</m:FlexBox>
+						</layout:BlockLayoutCell>
+					</layout:BlockLayoutRow>
+				</layout:BlockLayout>
+					
 		</headerContent>
      </ObjectPageLayout>
 </mvc:View>
