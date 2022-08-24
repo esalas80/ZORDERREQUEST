@@ -17,9 +17,6 @@ sap.ui.define([
 			delete this._oView;
 		},
 
-		getView: function() {
-			return this._oView;
-		},
 
 		getControl: function() {
 			return this._oControl;

@@ -15,8 +15,9 @@ sap.ui.define([
 	"sap/m/Input",
     "sap/m/Button",
     "sap/m/ButtonType",
-    "./DialogApprob"
-], function (BaseController, JSONModel, formatter, MessageBox, Fragment, Filter, sorter, FilterOperator, Core, Dialog, MessageToast, DialogType, Label, Input, Button, ButtonType, DialogApprob) {
+    "./DialogApprob",
+    "sap/ui/Device"
+], function (BaseController, JSONModel, formatter, MessageBox, Fragment, Filter, sorter, FilterOperator, Core, Dialog, MessageToast, DialogType, Label, Input, Button, ButtonType, DialogApprob, Device) {
     "use strict";
 
     return BaseController.extend("zorder.request.zorderrequest.controller.Worklist", {
@@ -33,10 +34,9 @@ sap.ui.define([
          */
         onInit : function () {
             var oViewModel;
-
-            // keeps the search state
-            this._aTableSearchState = [];
-            var oList = this.byId("list");
+            var eList = this.byId("list"),
+                t=this._createViewModel(),
+                i=eList.getBusyIndicatorDelay();
             // Model used to manipulate control states
             oViewModel = new JSONModel({
                 worklistTableTitle : this.getResourceBundle().getText("worklistTableTitle"),
@@ -45,7 +45,7 @@ sap.ui.define([
                 tableNoDataText : this.getResourceBundle().getText("tableNoDataText")
             });
             this.setModel(oViewModel, "worklistView");
-            this._oList = oList;
+            this._oList = eList;
             // keeps the filter and search state
             this._oListFilterState = {
                 aFilter : [],
@@ -53,7 +53,21 @@ sap.ui.define([
             };
             var userData = new sap.ushell.services.UserInfo();
             this.UserID=userData.getUser().getId();
-            this.onGetInitialData();
+           this.onGetInitialData();
+            var oDeviceModel = new JSONModel(Device);
+			oDeviceModel.setDefaultBindingMode("OneWay");
+			this.getView().setModel(oDeviceModel, "device");
+            this.setModel(t,"masterView");
+            eList.attachEventOnce("updateFinished",function(){
+                t.setProperty("/delay",i)
+            });
+            this.getView().addEventDelegate({
+                onBeforeFirstShow:function(){
+                    this.getOwnerComponent().oListSelector.setBoundMasterList(eList)
+                }.bind(this)
+            });
+            this.getRouter().getRoute("worklist").attachPatternMatched(this._onMasterMatched,this);
+            this.getRouter().attachBypassed(this.onBypassed,this);
         },
         onGetInitialData: async function(){
             var oList = this.byId("list");
@@ -66,6 +80,7 @@ sap.ui.define([
             var auxModel = new sap.ui.model.json.JSONModel(dataList.results);
             oList.setModel(auxModel,"ListModel");
         },
+       
         /* =========================================================== */
         /* event handlers                                              */
         /* =========================================================== */
@@ -181,9 +196,11 @@ sap.ui.define([
             this._oList.getBinding("items").filter(aFilters, "Application");
         },
         onSelectionChange:async  function (oEvent) {
-            sap.ui.core.BusyIndicator.show()
-            var tab = this.getView().byId("iconTabBar").getSelectedKey()
-            if(tab==="attach") this.getView().byId("iconTabBar").setSelectedKey("Items");
+            sap.ui.core.BusyIndicator.show();
+            var t=oEvent.getSource(),
+                i=oEvent.getParameter("selected");
+            // var tab = this.getView().byId("iconTabBar").getSelectedKey()
+            // if(tab==="attach") this.getView().byId("iconTabBar").setSelectedKey("Items");
             var object =oEvent.getSource().getSelectedItem().getBindingContext("ListModel").getObject();    
             var nroOrden = object.Banfn;
             var arrFilter=[];
@@ -193,11 +210,32 @@ sap.ui.define([
             var detailData = await this.getEntityV2(modelo,entidad, arrFilter)
             var auxModel = new sap.ui.model.json.JSONModel(detailData.results);
             var orderModel = new sap.ui.model.json.JSONModel(object);
-            this.getView().setModel(auxModel,"ListdetailModel");
-            this.getView().setModel(orderModel,"orderModel");
-            sap.ui.getCore().setModel(orderModel,"selectedOrder");
+            sap.ui.getCore().setModel(auxModel,"ListdetailModel");
+            sap.ui.getCore().setModel(orderModel, "OderDetail");
+            
+            if(!(t.getMode()==="MultiSelect"&&!i)){
+                this._showDetail(nroOrden)
+            }
+
             sap.ui.core.BusyIndicator.hide();
             
+        },
+        _createViewModel:function(){
+            return new JSONModel({
+                isFilterBarVisible:false,
+                filterBarLabel:"",
+                delay:0,
+                titleCount:0,
+                noDataText:this.getResourceBundle().getText("masterListNoDataText")
+            })
+        },
+        _onMasterMatched:function(){
+            this.getModel("appView").setProperty("/layout","OneColumn")
+        },
+        _showDetail:function(e){
+            var t=!Device.system.phone;
+            this.getModel("appView").setProperty("/layout","TwoColumnsMidExpanded");
+            this.getRouter().navTo("object",{objectId:e},t)
         },
         handleSelectionChange: function(oEvent){
             sap.ui.core.BusyIndicator.show();
@@ -423,7 +461,6 @@ sap.ui.define([
                             title: title,
                             onClose: function(){
                                 that.onGetInitialData();
-                                debugger
                                 var ordermodel = that.getView().getModel("orderModel");
                                 ordermodel.setData({modelData:{}});
                                 ordermodel.updateBindings(true);
