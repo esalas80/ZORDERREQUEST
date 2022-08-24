@@ -175,18 +175,6 @@ sap.ui.define([
         /* =========================================================== */
 
         /**
-         * Shows the selected item on the object page
-         * @param {sap.m.ObjectListItem} oItem selected Item
-         * @private
-         */
-        _showObject : function (oItem) {
-            sap.ui.core.BusyIndicator.hide();
-            this.getRouter().navTo("object", {
-                objectId: oItem.Banfn
-            });
-        },
-
-        /**
          * Internal helper method to apply both filter and search state together on the list binding
          * @param {sap.ui.model.Filter[]} aTableSearchState An array of filters for the search
          * @private
@@ -232,13 +220,6 @@ sap.ui.define([
             var t=!Device.system.phone;
             this.getModel("appView").setProperty("/layout","TwoColumnsMidExpanded");
             this.getRouter().navTo("object",{objectId:e},t)
-        },
-        handleSelectionChange: function(oEvent){
-            sap.ui.core.BusyIndicator.show();
-            var dataRow = oEvent.getParameters().listItem.getBindingContext("ListdetailModel").getObject();
-            var auxModel = new sap.ui.model.json.JSONModel(dataRow);
-            sap.ui.getCore().setModel(auxModel, "OderDetail");
-            this._showObject(dataRow);
         }
     });
 });

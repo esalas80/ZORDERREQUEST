@@ -396,6 +396,12 @@ sap.ui.define([
                     MessageBox.error("Error al ejecutar la operación");
                 }
             });
+        },
+        handleSelectionChange: function(oEvent){
+            var dataRow = oEvent.getParameters().listItem.getBindingContext("ListdetailModel").getObject();
+            var auxModel = new sap.ui.model.json.JSONModel(dataRow);
+            sap.ui.getCore().setModel(auxModel, "ItemDetail");
+            this.getRouter().navTo("itemDetail",{objectId:dataRow.Banfn,itemId:dataRow.Bnfpo},true)
         }
 
     });

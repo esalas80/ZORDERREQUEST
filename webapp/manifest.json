@@ -106,11 +106,11 @@
         },
         {
           "pattern": "headerSet/{objectId}/Itemdetail/{itemId}",
-          "name": "itemdetail",
+          "name": "itemDetail",
           "target": [
             "worklist",
             "object",
-            "itemdetail"
+            "itemDetail"
           ]
         }
 
@@ -129,9 +129,10 @@
           "controlAggregation": "midColumnPages",
           "title": "{i18n>objectViewTitle}"
         },
-        "itemdetail": {
-					"name": "Itemdetail",
-          "id":"itemdetail",
+        "itemDetail": {
+					"viewName": "ItemDetail",
+          "viewId":"ItemDetail",
+          "viewLevel": 1,
 					"controlAggregation": "endColumnPages"
 				},
         "objectNotFound": {
