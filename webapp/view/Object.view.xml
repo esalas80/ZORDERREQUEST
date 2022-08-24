@@ -29,7 +29,7 @@
 		<semantic:headerContent>
 			<m:ObjectHeader 
 				binding="{objectView>/}"
-				title="{objectView>Banfn}"
+				title="Pedido: {objectView>Banfn}"
 				titleActive="true"
 				number="{
 					parts:[{path:'objectView>Rlwrt'},{path:'objectView>Waers'}],

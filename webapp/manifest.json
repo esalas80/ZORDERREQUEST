@@ -80,6 +80,7 @@
         "viewPath": "zorder.request.zorderrequest.view",
         "controlId": "layout",
         "controlAggregation": "beginColumnPages",
+        "transition": "slide",
         "bypassed": {
           "target": [
             "notFound"
@@ -96,13 +97,23 @@
           ]
         },
         {
-          "pattern": "headerSet/{objectId}",
+          "pattern": "headerSet/{objectId}/:?query:",
           "name": "object",
           "target": [
             "worklist",
             "object"
           ]
+        },
+        {
+          "pattern": "headerSet/{objectId}/Itemdetail/{itemId}",
+          "name": "itemdetail",
+          "target": [
+            "worklist",
+            "object",
+            "itemdetail"
+          ]
         }
+
       ],
       "targets": {
         "worklist": {
@@ -118,6 +129,11 @@
           "controlAggregation": "midColumnPages",
           "title": "{i18n>objectViewTitle}"
         },
+        "itemdetail": {
+					"name": "Itemdetail",
+          "id":"itemdetail",
+					"controlAggregation": "endColumnPages"
+				},
         "objectNotFound": {
           "viewName": "ObjectNotFound",
           "viewId": "objectNotFound"

@@ -1,6 +1,7 @@
 sap.ui.define([
     "./BaseController",
     "sap/ui/model/json/JSONModel",
+    "sap/ui/core/Core",
     "../model/formatter",
     "sap/m/MessageBox",
     "sap/ui/core/Fragment",
@@ -9,15 +10,9 @@ sap.ui.define([
     "sap/ui/model/FilterOperator",
     "sap/m/Dialog",
     'sap/m/MessageToast',
-    'sap/m/DialogType',
-    "sap/m/Label",
-	"sap/m/Input",
-    "sap/m/Button",
-    "sap/m/ButtonType",
-    "./DialogApprob",
-    "sap/ui/Device",
-    "sap/ui/core/Core"
-], function (BaseController, JSONModel, formatter, MessageBox, Fragment, Filter, sorter, FilterOperator, Dialog, MessageToast, DialogType, Label, Input, Button, ButtonType, DialogApprob, Device, Core) {
+    "sap/ui/Device"
+    
+], function (BaseController, JSONModel, Core, formatter, MessageBox, Fragment, Filter, sorter, FilterOperator, Dialog, MessageToast, Device) {
     "use strict";
 
     return BaseController.extend("zorder.request.zorderrequest.controller.Worklist", {
@@ -53,7 +48,6 @@ sap.ui.define([
             };
             var userData = new sap.ushell.services.UserInfo();
             this.UserID=userData.getUser().getId();
-           this.onGetInitialData();
             var oDeviceModel = new JSONModel(Device);
 			oDeviceModel.setDefaultBindingMode("OneWay");
 			this.getView().setModel(oDeviceModel, "device");
@@ -66,6 +60,7 @@ sap.ui.define([
                     this.getOwnerComponent().oListSelector.setBoundMasterList(eList)
                 }.bind(this)
             });
+            this.getRouter().getRoute("worklist").attachPatternMatched(this._onObjectMatched, this);
             this.getRouter().getRoute("worklist").attachPatternMatched(this._onMasterMatched,this);
             this.getRouter().attachBypassed(this.onBypassed,this);
         },
@@ -80,7 +75,12 @@ sap.ui.define([
             var auxModel = new sap.ui.model.json.JSONModel(dataList.results);
             oList.setModel(auxModel,"ListModel");
         },
-       
+        _onMasterMatched:function(){
+            this.getModel("appView").setProperty("/layout","OneColumn")
+        },
+        _onObjectMatched: function () {
+            this.onGetInitialData(); 
+        },
         /* =========================================================== */
         /* event handlers                                              */
         /* =========================================================== */
@@ -199,8 +199,6 @@ sap.ui.define([
             sap.ui.core.BusyIndicator.show();
             var t=oEvent.getSource(),
                 i=oEvent.getParameter("selected");
-            var tab = sap.ui.getCore().getModel("ActiveTabModel")? sap.ui.getCore().getModel("ActiveTabModel").getProperty("/keyActive") : "attach";
-            //if(tab==="attach") this.getView().byId("iconTabBar").setSelectedKey("Items");
             var object =oEvent.getSource().getSelectedItem().getBindingContext("ListModel").getObject();    
             var nroOrden = object.Banfn;
             var arrFilter=[];
@@ -229,9 +227,7 @@ sap.ui.define([
                 noDataText:this.getResourceBundle().getText("masterListNoDataText")
             })
         },
-        _onMasterMatched:function(){
-            this.getModel("appView").setProperty("/layout","OneColumn")
-        },
+        
         _showDetail:function(e){
             var t=!Device.system.phone;
             this.getModel("appView").setProperty("/layout","TwoColumnsMidExpanded");

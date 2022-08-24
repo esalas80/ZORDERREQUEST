@@ -6,18 +6,21 @@ sap.ui.define([
     "sap/ui/core/Core",
     "sap/m/Dialog",
     'sap/m/MessageToast',
+    "sap/m/MessageBox",
     'sap/m/DialogType',
     "sap/m/Label",
 	"sap/m/Input",
     "sap/m/Button",
     "sap/m/ButtonType",
-    "./DialogApprob",
-], function (BaseController, JSONModel, History, formatter, Core, Dialog, MessageToast, DialogType, Label, Input, Button, ButtonType, DialogApprob) {
+    "./Worklist.controller",
+
+], function (BaseController, JSONModel, History, formatter, Core, Dialog, MessageToast, MessageBox, DialogType, Label, Input, Button, ButtonType, wklCont) {
     "use strict";
 
     return BaseController.extend("zorder.request.zorderrequest.controller.Object", {
 
         formatter: formatter,
+        wklCont: new wklCont(this),
 
         /* =========================================================== */
         /* lifecycle methods                                           */
@@ -28,6 +31,10 @@ sap.ui.define([
          * @public
          */
         onInit : function () {
+            this._aValidKeys=[
+                "Items",
+                "attach"
+            ];
             var dataActiveTab = {
                 keyActive:"Items"
             }
@@ -37,7 +44,7 @@ sap.ui.define([
                     busy : true,
                     delay : 0
                 });
-            this.getRouter().getRoute("object").attachPatternMatched(this._onObjectMatched, this);
+            
             var e=new JSONModel({
                 busy:false,
                 delay:0,
@@ -46,10 +53,12 @@ sap.ui.define([
                 totalOrderAmount:0,
                 selectedTab:""
             });
-            this.getRouter().getRoute("object").attachPatternMatched(this._onObjectMatched,this);
+            this.getRouter().getRoute("object").attachPatternMatched(this._onObjectMatched, this);
             this.setModel(e,"detailView");
             this.getOwnerComponent().getModel().metadataLoaded().then(this._onMetadataLoaded.bind(this))
             this.setModel(oViewModel, "objectView");
+            var userData = new sap.ushell.services.UserInfo();
+            this.UserID=userData.getUser().getId();
         },
         /* =========================================================== */
         /* event handlers                                              */
@@ -83,24 +92,31 @@ sap.ui.define([
          * @private
          */
         _onObjectMatched : function (oEvent) {
-            var sObjectId =  oEvent.getParameter("arguments").objectId;
+            var argument =  oEvent.getParameter("arguments");
            
-            this._sObjectId=sObjectId;
+            this._sObjectId=argument.objectId;
             if(this.getModel("appView").getProperty("/layout")!=="MidColumnFullScreen"){
                 this.getModel("appView").setProperty("/layout","TwoColumnsMidExpanded")
             }
-            this.loadDetail(sObjectId);
+            this.loadDetail(this._sObjectId);
+            var i=argument["?query"];
+            if(i&&this._aValidKeys.indexOf(i.tab)>=0){
+                this.getView().getModel("detailView").setProperty("/selectedTab",i.tab);
+                this.getRouter().getTargets().display(i.tab)
+            }else{
+                this.getRouter().navTo("object",{objectId:this._sObjectId,query:{tab:"Items"}},true)
+            }
         },
         _onMetadataLoaded:function(){
-            // var e=this.getView().getBusyIndicatorDelay(),
-            //     t=this.getModel("detailView"),
-            //     i=this.byId("list"),
-            //     o=i.getBusyIndicatorDelay();
-            // t.setProperty("/delay",0);
-            // t.setProperty("/lineItemTableDelay",0);
-            // i.attachEventOnce("updateFinished",function(){t.setProperty("/lineItemTableDelay",o)});
-            // t.setProperty("/busy",true);
-            // t.setProperty("/delay",e)
+            var e=this.getView().getBusyIndicatorDelay(),
+                t=this.getModel("detailView"),
+                i=this.byId("list"),
+                o=i.getBusyIndicatorDelay();
+            t.setProperty("/delay",0);
+            t.setProperty("/lineItemTableDelay",0);
+            i.attachEventOnce("updateFinished",function(){t.setProperty("/lineItemTableDelay",o)});
+            t.setProperty("/busy",true);
+            t.setProperty("/delay",e)
         },
         loadDetail: function(detailId){
             var that = this;
@@ -134,14 +150,14 @@ sap.ui.define([
         },
 
         onTabSelect: async function(oEvent){
-            var selectedOrder  =  sap.ui.getCore().getModel("OderDetail").getData();
+            var selectedOrder  =  sap.ui.getCore().getModel("OderDetail");
             if(!selectedOrder){
                 MessageToast.show("Seleccione  una solicitud de pedido");
                 return;
             }
             sap.ui.core.BusyIndicator.show()
             var tab = oEvent.getSource().getSelectedKey();
-            sap.ui.getCore().getModel("ActiveTabModel").setProperty("keyActive", tab);
+            sap.ui.getCore().getModel("ActiveTabModel").setProperty("/keyActive", tab);
             if(tab==="attach"){
                 var dataOrder  =  sap.ui.getCore().getModel("OderDetail").getData();
                 var modelo = this.getGenericModel();
@@ -281,8 +297,8 @@ sap.ui.define([
             return objType    
         },
         onPressAction: function(option){
-            var selectedOrder  =  sap.ui.getCore().getModel("OderDetail").getData();
-            if(!selectedOrder){
+            var ModelOrder  =  sap.ui.getCore().getModel("OderDetail");
+            if(!ModelOrder){
                 MessageToast.show("Seleccione  una solicitud de pedido");
                 return;
             }
@@ -313,7 +329,6 @@ sap.ui.define([
 						text: "Enviar",
 						press: function () {
 							var sText = Core.byId("submissionNote").getValue();
-							//MessageToast.show("Comentario es: " + sText);
                             this.onSendDialogApprobe(option)
 							this.oSubmitDialog.close();
 						}.bind(this)
@@ -329,6 +344,7 @@ sap.ui.define([
 			this.oSubmitDialog.open();
         },
         onSendDialogApprobe: function(option){
+            
             var that = this;
             var title = option === 1? "Solicitud Aprobada": "Solicitud Rechazada"
             sap.ui.core.BusyIndicator.show();
@@ -340,24 +356,21 @@ sap.ui.define([
             genericModel.read(entidad, {
                 success: function(oData, response) {
                     sap.ui.core.BusyIndicator.hide();
-                    var data = response.data
-                        //Type(E)= "Error", Type(S)= Succes
-                        //Message = Mensage Personalizado
-                        
+                    var data = response.data  
                     if(data.Type === "S"){
                         var mensage =  data.Message !== "" ? data.Message : "Operación realizada con exito";
                         MessageBox.success(mensage, {
                             icon: MessageBox.Icon.SUCCESS,
                             title: title,
                             onClose: function(){
-                                that.onGetInitialData();
-                                var ordermodel = that.getView().getModel("OderDetail");
+                                var ordermodel =  sap.ui.getCore().getModel("OderDetail");
                                 ordermodel.setData({modelData:{}});
                                 ordermodel.updateBindings(true);
                                 var modeldetail = that.getView().getModel("ListdetailModel");
                                 modeldetail.setData({modelData:{}});
                                 modeldetail.updateBindings(true);
                                 that.onCloseDetailPress();
+                                that.getRouter().navTo("worklist")
                             }
                         });
                     }else{
@@ -366,14 +379,14 @@ sap.ui.define([
                             icon: MessageBox.Icon.ERROR,
                             title: title,
                             onClose: function(){
-                                that.onGetInitialData();
-                                var ordermodel = that.getView().getModel("OderDetail");
+                                var ordermodel =sap.ui.getCore().getModel("OderDetail");
                                 ordermodel.setData({modelData:{}});
                                 ordermodel.updateBindings(true);
                                 var modeldetail = that.getView().getModel("ListdetailModel");
                                 modeldetail.setData({modelData:{}});
                                 modeldetail.updateBindings(true);
                                 that.onCloseDetailPress();
+                                that.getRouter().navTo("worklist")
                             }
                         });
                     }   

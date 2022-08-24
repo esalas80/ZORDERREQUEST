@@ -17,7 +17,7 @@
                 id="list"
                 width="auto"
                 class="sapFDynamicPageAlignContent"
-                mode="{= ${device>/system/phone} ? 'None' : 'SingleSelectMaster'}"
+                mode="SingleSelectMaster"
                 items="{
                     path: 'ListModel>/',
                     sorter: { path: 'Banfn', descending: true},
