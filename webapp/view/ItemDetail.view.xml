@@ -4,6 +4,8 @@
     xmlns="sap.f"
 	xmlns:m="sap.m"
     xmlns:layout="sap.ui.layout"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core"
 	displayBlock="true"
 	height="100%"
 	busyIndicatorDelay="0"
@@ -30,73 +32,82 @@
 						icon="sap-icon://decline"
 						press=".handleClose"
 						tooltip="Close column"
-						visible="{= !${device>/system/phone} &amp;&amp; ${appView>/actionButtonsInfo/endColumn/fullScreen}}"/>
+						/>
 				</navigationActions>
 			</DynamicPageTitle>
 		</title>
 		<content >
-			 <layout:HorizontalLayout class="sapUiResponsiveContentPadding">
-                    <layout:VerticalLayout class="sapUiResponsiveContentPadding">
-                        <m:Label text="{i18n>NroMat}" />
-                        <m:VBox>
-                            <m:Label text="{ItemDetail>/Matnr}" design="Bold"/>
-                        </m:VBox>
-                        <m:Label text="{i18n>Almacen}" />
-                        <m:VBox>
-                            <m:Label text="{ItemDetail>/Lgort} - {ItemDetail>/Lgobe}" design="Bold"/>
-                        </m:VBox>
-                    </layout:VerticalLayout>
+            <m:VBox>
+            
+                <f:SimpleForm id="SimpleFormProcessorInfo"
+                    editable="false"
+                    layout="ResponsiveGridLayout"
+                    title="Detalle de Material"
+                    labelSpanXL="5"
+                    labelSpanL="5"
+                    labelSpanM="12"
+                    labelSpanS="12"
+                    adjustLabelSpan="false"
+                    emptySpanXL="0"
+                    emptySpanL="0"
+                    emptySpanM="0"
+                    emptySpanS="0"
+                    columnsXL="3"
+                    columnsL="3"
+                    columnsM="1"
+                    singleContainerFullSize="false">
+                    <f:content>
+                    	<core:Title text="" />
+                        <m:Label text="{i18n>NroMat}" width="auto" textAlign="End"/>
+                        <m:Text text="{ItemDetail>/Matnr}"  />
+                        <m:Label text="{i18n>DescMat}" width="auto" textAlign="End"/>
+                        <m:Text text="{ItemDetail>/Txz01}" />
+                        <m:Label text="{i18n>Almacen}" width="auto" textAlign="End"/>
+                        <m:Text text="{ItemDetail>/Lgort} - {ItemDetail>/Lgobe}" />
+                        <m:Label text="{i18n>Plant}" width="auto" textAlign="End"/>
+                        <m:Text text="{ItemDetail>/Werks} -{ItemDetail>/NameWerks}" />
 
-                    <layout:VerticalLayout class="sapUiResponsiveContentPadding">
-                        <m:Label text="{i18n>DescMat}" />
-                        <m:VBox>
-                            <m:Label text="{ItemDetail>/Txz01}" design="Bold"/>
-                        </m:VBox>
-                        <m:Label text="{i18n>Plant}" />
-                        <m:VBox>
-                            <m:Label text="{ItemDetail>/Werks} -{ItemDetail>/NameWerks}" design="Bold"/>
-                        </m:VBox>
-                    </layout:VerticalLayout>
+                        <core:Title text="" />                        
+                        <m:Label text="{i18n>Quantity}"  width="auto" textAlign="End" />
+                        <m:Text text="{ItemDetail>/Menge}"/>
+                        <m:Label text="{i18n>UnitMed}"  width="auto" textAlign="End" />
+                        <m:Text text="{ItemDetail>/Meins}" />
+                        <m:Label text="{i18n>FecPed}"  width="auto" textAlign="End"  />
+                        <m:Text text="{path : 'ItemDetail>/Badat', type: 'sap.ui.model.odata.type.DateTime' , formatOptions: { pattern: 'dd-MM-yyyy', UTC: true } }" />
+                        <m:Label text="{i18n>FecEnt}"  width="auto" textAlign="End"/>
+                        <m:Text text="{path : 'ItemDetail>/Lfdat', type: 'sap.ui.model.odata.type.DateTime' , formatOptions: { pattern: 'dd-MM-yyyy', UTC: true } }" />
 
-                    <layout:VerticalLayout class="sapUiResponsiveContentPadding">
-                        <m:Label text="{i18n>Quantity} "  width="auto" textAlign="End" />
-                        <m:VBox>
-                            <m:Label text="{ItemDetail>/Menge}" design="Bold"/>
-                        </m:VBox>
+                        <core:Title text="" />
+                        <m:Label text="{i18n>Imp}"  width="auto" textAlign="End" />
+                        <m:Text text="{path:'ItemDetail>/Rlwrt', type: 'sap.ui.model.type.Float', formatOptions: { minFractionDigits: 2, maxFractionDigits: 2, groupingSeparator: ',', decimalSeparator: '.' }}"  />
+                        <m:Label text="{i18n>Curr}" width="auto" textAlign="End"/>
+						<m:Text text="{ItemDetail>/Waers}" />
+						<m:Label text="{i18n>Sol}"  width="auto" textAlign="End" />
+                        <m:Text text="{ItemDetail>/Afnam}" />
+                        <m:Label text="{i18n>TipoIm}"  width="auto" textAlign="End" />
+                        <m:Text text="{ItemDetail>/Knttp}" />			
 
-                        <m:Label text="{i18n>FecPed} "  width="auto" textAlign="End"  />
-                        <m:VBox>
-                            <m:Label text="{path : 'ItemDetail>/Badat', type: 'sap.ui.model.odata.type.DateTime' , formatOptions: { pattern: 'dd-MM-yyyy', UTC: true } }" design="Bold"/>
-                        </m:VBox>
-                    </layout:VerticalLayout>
-
-                    <layout:VerticalLayout class="sapUiResponsiveContentPadding">
-                        <m:Label text="{i18n>UnitMed} "  width="auto" textAlign="End" />
-                        <m:VBox>
-                            <m:Label text="{ItemDetail>/Meins}" design="Bold"/>
-                        </m:VBox>
-
-                        <m:Label text="{i18n>FecEnt} "  width="auto" textAlign="End"/>
-                        <m:VBox>
-                            <m:Label text="{path : 'ItemDetail>/Lfdat', type: 'sap.ui.model.odata.type.DateTime' , formatOptions: { pattern: 'dd-MM-yyyy', UTC: true } }" design="Bold"/>
-                        </m:VBox>
-                    </layout:VerticalLayout>
-
-                    <layout:VerticalLayout class="sapUiResponsiveContentPadding">
-                        <m:Label text="{i18n>Imp} "  width="auto" textAlign="End" />
-                        <m:VBox>
-                            <m:Label text="{path:'ItemDetail>/Rlwrt', type: 'sap.ui.model.type.Float', formatOptions: { minFractionDigits: 2, maxFractionDigits: 2, groupingSeparator: ',', decimalSeparator: '.' }}" design="Bold" />
-                        </m:VBox>
-                    </layout:VerticalLayout>
-
-                    <layout:VerticalLayout class="sapUiResponsiveContentPadding">
-                        <m:Label text="{i18n>Curr}" />
-                        <m:VBox>
-                            <m:Label text="{ItemDetail>/Waers}" design="Bold"/>
-                        </m:VBox>
-                    </layout:VerticalLayout>	
-            </layout:HorizontalLayout>
-           
+                        <core:Title text="" />
+                        <m:Label text="{i18n>OrgCom}"  width="auto" textAlign="End" />
+                        <m:Text text="{ItemDetail>/Ekorg}" />
+                        <m:Label text="{i18n>Act1}"  width="auto" textAlign="End" />
+                        <m:Text text="{ItemDetail>/Anln1}" />
+                        <m:Label text="{i18n>GpoCom}"  width="auto" textAlign="End" />							 
+                        <m:Text text="{ItemDetail>/Ekgrp}" />
+                        <m:Label text="{i18n>Act2}"  width="auto" textAlign="End" />
+                        <m:Text text="{ItemDetail>/Anln2}" />
+                            
+                        <core:Title text="" />
+                        <m:Label text="{i18n>RegCom} "  width="auto" textAlign="End" />
+						<m:Text text="{ItemDetail>/Infnr}" />
+                        <m:Label text="{i18n>CtaMayor}"  width="auto" textAlign="End" />
+                        <m:Text text="{ItemDetail>/Sakto}" />
+                        <m:Label text="{i18n>CentCost}"  width="auto" textAlign="End" />
+                        <m:Text text="{ItemDetail>/Kostl}" />
+                    </f:content>
+                   
+                </f:SimpleForm>
+            </m:VBox>
 		</content>
         
 	</DynamicPage>

@@ -223,7 +223,7 @@ sap.ui.define([
         },
         handleSelectionAttach: function(oEvent){
             sap.ui.core.BusyIndicator.show();
-            var dataRow = oEvent.getSource().getBindingContext("ListAttachModel").getObject();
+            var dataRow =oEvent.getSource().getSelectedItem().getBindingContext("ListAttachModel").getObject();
             var dtValue = new Date();
             var fileName = "Document_" + String(dtValue.getDate()) + String(dtValue.getMonth()+1) + String(dtValue.getFullYear()) + String(dtValue.getHours()) + String(dtValue.getMinutes());
             //this.onViewerPDF(dataRow.File,fileName)

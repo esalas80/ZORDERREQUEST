@@ -19,9 +19,6 @@ sap.ui.define([
 			this._supplier = oEvent.getParameter("arguments").supplier || this._supplier || "0";
 			this._product = oEvent.getParameter("arguments").product || this._product || "0";
 
-			this.getView().bindElement({
-				model: "item"
-			});
 		},
         _onObjectMatched : function (oEvent) {
             var oViewModel = new JSONModel({
@@ -32,8 +29,8 @@ sap.ui.define([
            
             this._sObjectId=argument.objectId  || this._sObjectId || "0"; 
             this._itemId=argument.itemId || this._itemId || "0"; 
-            if(this.getModel("appView").getProperty("/layout")!=="MidColumnFullScreen"){
-                this.getModel("appView").setProperty("/layout","ThreeColumnsMidExpanded")
+            if(this.getModel("appView").getProperty("/layout")!=="EndColumnFullScreen"){
+                this.getModel("appView").setProperty("/layout","ThreeColumnsEndExpanded")
             }
             this.loadDetail(this._sObjectId);
         },
@@ -66,7 +63,8 @@ sap.ui.define([
 		},
 
 		handleClose: function () {
-			this.getRouter().navTo("object", {objectId:this._sObjectId});
+            this.getModel("appView").setProperty("/actionButtonsInfo/endColumn/fullScreen",false);
+            this.getRouter().navTo("object", {objectId:this._sObjectId});
 		},
 
 	});

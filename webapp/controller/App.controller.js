@@ -17,6 +17,9 @@ sap.ui.define([
                 {
                     midColumn:{
                     fullScreen:false
+                    },
+                    endColumn:{
+                        fullScreen:false
                     }
                 }   
             });

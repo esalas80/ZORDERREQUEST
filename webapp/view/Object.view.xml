@@ -102,7 +102,7 @@
 										</m:Column>
 									</m:columns>
 									<m:items>
-										<m:ColumnListItem  type="Navigation" press=".onPress">
+										<m:ColumnListItem  type="Navigation" >
 											<m:cells>
 												<m:ObjectAttribute
 														text="{ListdetailModel>Bnfpo}"/>
@@ -139,22 +139,21 @@
 							<m:content >
 								<m:List
 									class="sapFDynamicPageAlignContent"
-                					mode="{= ${device>/system/phone} ? 'None' : 'SingleSelectMaster'}"
+                					mode="SingleSelectMaster"
+									selectionChange="handleSelectionAttach"
 									id="ShortAttachments"
 									headerText="Adjuntos"
 									items="{path: 'ListAttachModel>/'}"
 									noDataText="{i18n>noDataRequest}"
-									width="90%">
+									>
 									<m:items>
 										<m:StandardListItem
-			
 											title="{ListAttachModel>Banfn}"
 											description="{ListAttachModel>ObjType}"
 											icon="{ListAttachModel>Icon}"
 											iconDensityAware="false"
 											iconInset="false"
-											type="Navigation"
-											press="handleSelectionAttach"/>
+											type="Navigation"/>
 									</m:items>
 								</m:List>
 							</m:content>
