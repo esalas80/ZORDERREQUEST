@@ -148,7 +148,7 @@
 									>
 									<m:items>
 										<m:StandardListItem
-											title="{ListAttachModel>Banfn}"
+											title="{ListAttachModel>Name}"
 											description="{ListAttachModel>ObjType}"
 											icon="{ListAttachModel>Icon}"
 											iconDensityAware="false"

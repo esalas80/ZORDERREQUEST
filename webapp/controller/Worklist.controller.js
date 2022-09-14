@@ -187,7 +187,7 @@ sap.ui.define([
             sap.ui.core.BusyIndicator.show();
             var t=oEvent.getSource(),
                 i=oEvent.getParameter("selected");
-            var object =oEvent.getSource().getSelectedItem().getBindingContext("ListModel").getObject();    
+            var object =oEvent.getSource().getSelectedItem().getBindingContext("ListModel").getObject();
             var nroOrden = object.Banfn;
             var arrFilter=[];
             arrFilter.push(new sap.ui.model.Filter("Banfn", sap.ui.model.FilterOperator.EQ, nroOrden)); 

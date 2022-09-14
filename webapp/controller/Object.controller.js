@@ -174,7 +174,8 @@ sap.ui.define([
                             ObjName: atachments.results[index].ObjName,
                             ObjType: atachments.results[index].ObjType,
                             File: atachments.results[index].File,
-                            Icon:  this.getIcon(atachments.results[index].ObjType)
+                            Icon:  this.getIcon(atachments.results[index].ObjType),
+                            Name: atachments.results[index].Name
                         }
                         data.push(elemnt)
                    }
@@ -225,7 +226,9 @@ sap.ui.define([
             sap.ui.core.BusyIndicator.show();
             var dataRow =oEvent.getSource().getSelectedItem().getBindingContext("ListAttachModel").getObject();
             var dtValue = new Date();
-            var fileName = "Document_" + String(dtValue.getDate()) + String(dtValue.getMonth()+1) + String(dtValue.getFullYear()) + String(dtValue.getHours()) + String(dtValue.getMinutes());
+            //var fileName = "Document_" + String(dtValue.getDate()) + String(dtValue.getMonth()+1) + String(dtValue.getFullYear()) + String(dtValue.getHours()) + String(dtValue.getMinutes());
+            var fileName = dataRow.Name;
+            debugger
             //this.onViewerPDF(dataRow.File,fileName)
             this.downloadFile(dataRow.File, fileName, dataRow.ObjType)
             sap.ui.core.BusyIndicator.hide();
@@ -302,7 +305,7 @@ sap.ui.define([
                 MessageToast.show("Seleccione  una solicitud de pedido");
                 return;
             }
-            var title=option=== 1? "Aprovar Solicitud": "Rechazar Solicitud"
+            var title=option=== 1? "Aprobar Solicitud": "Rechazar Solicitud"
             if(this.oSubmitDialog){
                 this.oSubmitDialog.destroy(); 
                 this.oSubmitDialog = undefined; 
