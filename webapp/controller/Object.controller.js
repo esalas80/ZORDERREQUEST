@@ -310,7 +310,7 @@ sap.ui.define([
                 this.oSubmitDialog.destroy(); 
                 this.oSubmitDialog = undefined; 
             } 
-            Core.byId("submissionNote")? Core.byId("submissionNote").setValue(""): "";
+            Core.byId("submissionNoteSolPed")? Core.byId("submissionNoteSolPed").setValue(""): "";
             if (!this.oSubmitDialog) {
 				this.oSubmitDialog = new Dialog({
 					type: DialogType.Message,
@@ -318,9 +318,9 @@ sap.ui.define([
 					content: [
 						new Label({
 							text: "¿Desea "+ title+"?",
-							labelFor: "submissionNote"
+							labelFor: "submissionNoteSolPed"
 						}),
-						new sap.m.TextArea("submissionNote", {
+						new sap.m.TextArea("submissionNoteSolPed", {
 							width: "100%",
                             type: "Text",
 							placeholder: "Agregar Nota (No requerido)",
@@ -331,8 +331,8 @@ sap.ui.define([
 						type: ButtonType.Emphasized,
 						text: "Enviar",
 						press: function () {
-							var sText = Core.byId("submissionNote").getValue();
-                            this.onSendDialogApprobe(option)
+							var sText = Core.byId("submissionNoteSolPed").getValue() !== ""? Core.byId("submissionNoteSolPed").getValue(): ".";
+                            this.onSendDialogApprobe(option, sText)
 							this.oSubmitDialog.close();
 						}.bind(this)
 					}),
@@ -346,7 +346,7 @@ sap.ui.define([
 			}
 			this.oSubmitDialog.open();
         },
-        onSendDialogApprobe: function(option){
+        onSendDialogApprobe: function(option, message){
             
             var that = this;
             var title = option === 1? "Solicitud Aprobada": "Solicitud Rechazada"
@@ -355,7 +355,7 @@ sap.ui.define([
             var WiId = orderdata.WiId;
             var genericModel = this.getGenericModel();
             var user = this.UserID ==="DEFAULT_USER" || this.UserID ==="" ? "EXT_OMAR" :  this.UserID ;
-            var entidad = "/ApprovalSet(WiId='"+WiId+"',Uname='"+ user +"',Approved="+option+")";            
+            var entidad = "/ApprovalSet(WiId='"+WiId+"',Uname='"+ user +"',Approved="+option+",Rmessage='"+message.trim().replace(/ /g,"%20")+"')";  
             genericModel.read(entidad, {
                 success: function(oData, response) {
                     sap.ui.core.BusyIndicator.hide();

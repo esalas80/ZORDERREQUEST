@@ -66,6 +66,7 @@
 									id="lineItemsList"
 									class="sapUiSmallMarginTop"
 									width="auto"
+									growing="true" 
 									mode="SingleSelectMaster"
 									selectionChange="handleSelectionChange"
 									items="{path: 'ListdetailModel>/'}"
@@ -82,22 +83,22 @@
 										<m:Column>
 											<m:Text text="{i18n>Pos}"/>
 										</m:Column>
-										<m:Column >
+										<m:Column minScreenWidth="Tablet" demandPopin="true" >
 											<m:Text text="{i18n>NoMat}"/>
 										</m:Column>
-										<m:Column>
+										<m:Column minScreenWidth="Tablet" demandPopin="true">
 											<m:Text text="{i18n>DescMat}"/>
 										</m:Column>
-										<m:Column>
+										<m:Column minScreenWidth="Tablet" demandPopin="true">
 											<m:Text text="{i18n>Quantity}"/>
 										</m:Column>
-										<m:Column>
+										<m:Column minScreenWidth="Tablet" demandPopin="true">
 											<m:Text text="{i18n>Imp}"/>
 										</m:Column>
-										<m:Column>
+										<m:Column minScreenWidth="Tablet" demandPopin="true">
 											<m:Text text="{i18n>Subtot}"/>
 										</m:Column>
-										<m:Column>
+										<m:Column minScreenWidth="Tablet" demandPopin="true">
 											<m:Text text="{i18n>FecEnt}"/>
 										</m:Column>
 									</m:columns>
@@ -115,12 +116,14 @@
 														path: 'ListdetailModel>Menge'
 													}"
 													unit="{ListdetailModel>Meins}"/>
-												<m:ObjectNumber
+												<!-- <m:ObjectNumber
 													number="{
 														path: 'ListdetailModel>Rlwrt',
 														formatter: '.formatter.currencyValue'
 													}"
-													unit="{ListdetailModel>Waers}"/>
+													unit="{ListdetailModel>Waers}"/> -->
+												<m:ObjectAttribute
+													text="$ {path:'ListdetailModel>Rlwrt', type: 'sap.ui.model.type.Float', formatOptions: { minFractionDigits: 2, maxFractionDigits: 2, groupingSeparator: ',', decimalSeparator: '.' }}"/>
 												<m:ObjectAttribute
 													text="$ {path:'ListdetailModel>Total', type: 'sap.ui.model.type.Float', formatOptions: { minFractionDigits: 2, maxFractionDigits: 2, groupingSeparator: ',', decimalSeparator: '.' }}"/>
 												<m:ObjectIdentifier
