@@ -216,6 +216,18 @@ sap.ui.define([
                 case "CSV":
                     icon = "sap-icon://excel-attachment";
                     break;
+                case "MSG":
+                    icon = "sap-icon://email";
+                    break;
+                case "EML":
+                    icon = "sap-icon://email";
+                    break;    
+                case "ZIP":
+                    icon = "sap-icon://attachment-zip-file";
+                    break;        
+                case "RAR":
+                    icon = "sap-icon://attachment-zip-file";
+                    break;            
                 default:
                     icon = "sap-icon://document";
                     break;
@@ -256,6 +268,22 @@ sap.ui.define([
 			//data = Xstring del servicio que contienen el pdf
 			var element = document.createElement('a');
             var objectType = this.getMimeType(type)
+            switch (type) {
+                case "MSG":
+                    nombre += "." + type.toLowerCase(); 
+                    break;
+                case "EML":
+                    nombre += "." + type.toLowerCase(); 
+                    break;
+                case "ZIP":
+                    nombre += "." + type.toLowerCase(); 
+                    break;
+                case "RAR":
+                    nombre += "." + type.toLowerCase(); 
+                    break;        
+                default:
+                    break;
+            };
 			element.setAttribute('href', 'data:'+ objectType +';base64,' + data);
 			element.setAttribute('download', (nombre ? nombre : "Documento"));
 			element.style.display = 'none';
@@ -292,10 +320,24 @@ sap.ui.define([
                     break; 
                 case "CSV":
                     objType = "text/csv";
-                    break;           
+                    break;
+                case "MSG":
+                    objType = "application/vnd.ms-outlook";
+                    break;          
+                case "EML":
+                    objType = "application/octet-stream";
+                    break;                 
+                case "ZIP":
+                    objType = "application/zip";
+                    break;                       
+                case "RAR":
+                    objType = "application/rar";
+                    break;    
                 default:
                     objType = "application/pdf";
                     break;
+
+                    
             }
             return objType    
         },
