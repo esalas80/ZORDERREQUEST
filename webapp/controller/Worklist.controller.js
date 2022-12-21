@@ -10,7 +10,8 @@ sap.ui.define([
     "sap/ui/model/FilterOperator",
     "sap/m/Dialog",
     'sap/m/MessageToast',
-    "sap/ui/Device"
+    "sap/ui/Device",
+	"sap/makit/CombinationChart"
     
 ], function (BaseController, JSONModel, Core, formatter, MessageBox, Fragment, Filter, sorter, FilterOperator, Dialog, MessageToast, Device) {
     "use strict";
@@ -193,7 +194,19 @@ sap.ui.define([
             arrFilter.push(new sap.ui.model.Filter("Banfn", sap.ui.model.FilterOperator.EQ, nroOrden)); 
             var modelo = this.getGenericModel();
             var entidad = "/Req_DetailSet"
-            var detailData = await this.getEntityV2(modelo,entidad, arrFilter)
+            var detailData;
+            await this.getEntityV2(modelo,entidad, arrFilter).then(value =>{
+                detailData=value;
+            }).catch((e)=>{
+                sap.ui.core.BusyIndicator.hide();
+            });
+            var arrfechas=[];
+            detailData.results.forEach(element => {
+                arrfechas.push(element.Lfdat) 
+            });
+            var highestDate= new Date(Math.max.apply(null,arrfechas));
+            var minimumdate = new Date(Math.min.apply(null,arrfechas));
+            object.deliveryDate=highestDate
             var auxModel = new sap.ui.model.json.JSONModel(detailData.results);
             var orderModel = new sap.ui.model.json.JSONModel(object);
             sap.ui.getCore().setModel(auxModel,"ListdetailModel");
@@ -202,9 +215,7 @@ sap.ui.define([
             if(!(t.getMode()==="MultiSelect"&&!i)){
                 this._showDetail(nroOrden)
             }
-
             sap.ui.core.BusyIndicator.hide();
-            
         },
         _createViewModel:function(){
             return new JSONModel({

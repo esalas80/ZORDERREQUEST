@@ -118,6 +118,12 @@ sap.ui.define([
             t.setProperty("/busy",true);
             t.setProperty("/delay",e)
         },
+       /* Loading the data from the model into the view. */
+        /**
+         * @date 2022-11-29
+         * @param {any} detailId
+         * @returns {any}
+         */
         loadDetail: function(detailId){
             var that = this;
             var i18n = this.getView().getModel("i18n").getResourceBundle();
@@ -138,6 +144,11 @@ sap.ui.define([
             this.getRouter().navTo("worklist")
         },
 
+       /* Toggling the full screen mode. */
+        /**
+         * @date 2022-11-29
+         * @returns {any}
+         */
         toggleFullScreen:function(){
             var e=this.getModel("appView").getProperty("/actionButtonsInfo/midColumn/fullScreen");
             this.getModel("appView").setProperty("/actionButtonsInfo/midColumn/fullScreen",!e);
@@ -149,6 +160,12 @@ sap.ui.define([
             }
         },
 
+        /* The above code is a function that is called when a tab is selected. */
+        /**
+         * @date 2022-11-29
+         * @param {any} oEvent
+         * @returns {any}
+         */
         onTabSelect: async function(oEvent){
             var selectedOrder  =  sap.ui.getCore().getModel("OderDetail");
             if(!selectedOrder){
@@ -158,9 +175,10 @@ sap.ui.define([
             sap.ui.core.BusyIndicator.show()
             var tab = oEvent.getSource().getSelectedKey();
             sap.ui.getCore().getModel("ActiveTabModel").setProperty("/keyActive", tab);
+            var dataOrder  =  sap.ui.getCore().getModel("OderDetail").getData();
+            var modelo = this.getGenericModel();
             if(tab==="attach"){
-                var dataOrder  =  sap.ui.getCore().getModel("OderDetail").getData();
-                var modelo = this.getGenericModel();
+                
                 var entidad = "/get_attachSet"
                 var arrFilter=[];
                 arrFilter.push(new sap.ui.model.Filter("Banfn", sap.ui.model.FilterOperator.EQ, dataOrder.Banfn)); 
@@ -184,8 +202,27 @@ sap.ui.define([
                 var auxModel = new sap.ui.model.json.JSONModel(data); 
                 this.getView().setModel(auxModel,"ListAttachModel");
             }
+            else if(tab==="text"){
+                var entidad = "/TextosSolpedSet"
+                var texts;
+                var arrFilter=[];
+                arrFilter.push(new sap.ui.model.Filter("Banfn", sap.ui.model.FilterOperator.EQ, dataOrder.Banfn.toString())); 
+                await this.getEntityV2(modelo,entidad, arrFilter).then(value=>{
+                    texts = value.results;
+                }).catch((e)=>{
+                    sap.ui.core.BusyIndicator.hide();
+                });
+                var auxOrderModel = new sap.ui.model.json.JSONModel(texts); 
+                this.getView().setModel(auxOrderModel,"ListTextModel");
+            }
             sap.ui.core.BusyIndicator.hide()
         },
+       /* A function that returns an icon based on the file type. */
+        /**
+         * @date 2022-11-29
+         * @param {any} type
+         * @returns {any}
+         */
         getIcon:function(type){
             var icon="sap-icon://document"
             switch (type) {
@@ -234,6 +271,12 @@ sap.ui.define([
             }
             return icon;
         },
+       /* Downloading the file. */
+        /**
+         * @date 2022-11-29
+         * @param {any} oEvent
+         * @returns {any}
+         */
         handleSelectionAttach: function(oEvent){
             sap.ui.core.BusyIndicator.show();
             var dataRow =oEvent.getSource().getSelectedItem().getBindingContext("ListAttachModel").getObject();
@@ -245,6 +288,13 @@ sap.ui.define([
             this.downloadFile(dataRow.File, fileName, dataRow.ObjType)
             sap.ui.core.BusyIndicator.hide();
         },
+        /* Creating a new window and writing the pdf to it. */
+        /**
+         * @date 2022-11-29
+         * @param {any} pdf
+         * @param {any} namePdf
+         * @returns {any}
+         */
         onViewerPDF: function(pdf, namePdf) {
             var objbuilder;
 
@@ -264,8 +314,18 @@ sap.ui.define([
             win.document.write(objbuilder);
             win.document.write('</body></html>');
         },
+        
+        /* Creating a new element, setting the href attribute to the data, setting the download
+        attribute to the name of the file, and then appending the element to the body of the
+        document. */
+        /**
+         * @param {any} data
+         * @param {any} nombre
+         * @param {any} type
+         * @returns {any}
+         */
         downloadFile: function (data, nombre, type) {
-			//data = Xstring del servicio que contienen el pdf
+		
 			var element = document.createElement('a');
             var objectType = this.getMimeType(type)
             switch (type) {
@@ -291,6 +351,12 @@ sap.ui.define([
 			element.click();
 			document.body.removeChild(element)
 		},
+       /* Getting the mime type of the file. */
+        /**
+         * @date 2022-11-29
+         * @param {any} type
+         * @returns {any}
+         */
         getMimeType: function(type){
             var objType=""
             switch (type) {
@@ -341,6 +407,12 @@ sap.ui.define([
             }
             return objType    
         },
+       /* The above code is creating a dialog box with two buttons. */
+        /**
+         * @date 2022-11-29
+         * @param {any} option
+         * @returns {any}
+         */
         onPressAction: function(option){
             var ModelOrder  =  sap.ui.getCore().getModel("OderDetail");
             if(!ModelOrder){
@@ -388,6 +460,13 @@ sap.ui.define([
 			}
 			this.oSubmitDialog.open();
         },
+        /* The above code is sending a request to the backend to approve or reject a request. */
+        /**
+         * @date 2022-11-29
+         * @param {any} option
+         * @param {any} message
+         * @returns {any}
+         */
         onSendDialogApprobe: function(option, message){
             
             var that = this;
@@ -442,6 +521,14 @@ sap.ui.define([
                 }
             });
         },
+        /* The above code is a function that is called when a user selects a row in the table. The
+        function gets the data from the row that was selected and then sets the data to a model
+        called ItemDetail. The function then navigates to the itemDetail view. */
+        /**
+         * @date 2022-11-29
+         * @param {any} oEvent
+         * @returns {any}
+         */
         handleSelectionChange: function(oEvent){
             var dataRow = oEvent.getParameters().listItem.getBindingContext("ListdetailModel").getObject();
             var auxModel = new sap.ui.model.json.JSONModel(dataRow);

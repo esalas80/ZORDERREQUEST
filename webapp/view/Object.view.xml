@@ -42,8 +42,9 @@
 			<m:ObjectAttribute active="true" title="Usuario" text="{objectView>/Ernam}" />
 			<m:ObjectAttribute title="Usuario SAP" text="{objectView>/Uname}" />
 			<m:ObjectAttribute title="Fecha Solicitud" text="{path : 'objectView>/Erdat', type: 'sap.ui.model.odata.type.DateTime' , formatOptions: { pattern: 'dd-MM-yyyy', UTC: true } }" />
+			<m:ObjectAttribute title="Fecha Entrega" text="{path : 'objectView>/deliveryDate', type: 'sap.ui.model.odata.type.DateTime' , formatOptions: { pattern: 'dd-MM-yyyy', UTC: true } }" />
 			<m:ObjectAttribute title="Tipo Documento" text="{objectView>/Bsart} - {objectView>/Batxt}" />
-			<m:ObjectAttribute title="{i18n>Plant}" text="{objectView>/Werks} - {orderModel>/NameWerks}" />
+			<m:ObjectAttribute title="{i18n>Plant}" text="{objectView>/Werks} - {objectView>/NameWerks}" />
 			<m:ObjectAttribute title="{i18n>Almacen}" text="{objectView>/Lgort} - {objectView>/NameLgort}" />
 		
 			
@@ -111,17 +112,8 @@
 													text="{ListdetailModel>Matnr}"/>  
 												<m:ObjectIdentifier
 													text="{ListdetailModel>Txz01}"/>   
-												<m:ObjectNumber
-													number="{
-														path: 'ListdetailModel>Menge'
-													}"
-													unit="{ListdetailModel>Meins}"/>
-												<!-- <m:ObjectNumber
-													number="{
-														path: 'ListdetailModel>Rlwrt',
-														formatter: '.formatter.currencyValue'
-													}"
-													unit="{ListdetailModel>Waers}"/> -->
+												<m:ObjectAttribute
+													text="{ListdetailModel>Meins} {ListdetailModel>Menge}"/>
 												<m:ObjectAttribute
 													text="$ {path:'ListdetailModel>Rlwrt', type: 'sap.ui.model.type.Float', formatOptions: { minFractionDigits: 2, maxFractionDigits: 2, groupingSeparator: ',', decimalSeparator: '.' }}"/>
 												<m:ObjectAttribute
@@ -158,6 +150,28 @@
 											iconInset="false"
 											type="Navigation"/>
 									</m:items>
+								</m:List>
+							</m:content>
+						</m:IconTabFilter>
+						<m:IconTabFilter
+							id="iconTabFilterComents"
+							icon="sap-icon://notification-2"
+							tooltip="{i18n>detailIconTabBarComents}"
+							key="text">
+							<m:content >
+								<m:List
+									headerText="Comentarios"
+									items="{path:'ListTextModel>/'}" >
+									<m:FeedListItem
+										sender="{Author}"
+										icon="sap-icon://post"
+										iconDensityAware="false"
+										info="{ListTextModel>Text}"
+										timestamp="{Date}"
+										convertLinksToAnchorTags="All"
+										actions="{path: 'Actions', templateShareable: false}">
+										<m:FeedListItemAction text="{ListTextModel>Ebeln}" icon="{Icon}" key="{Key}"  />
+									</m:FeedListItem>
 								</m:List>
 							</m:content>
 						</m:IconTabFilter>
