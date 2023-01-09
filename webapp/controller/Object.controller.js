@@ -203,7 +203,7 @@ sap.ui.define([
                 this.getView().setModel(auxModel,"ListAttachModel");
             }
             else if(tab==="text"){
-                var entidad = "/TextosSolpedSet"
+                var entidad = "/TextosSolpedSet";
                 var texts;
                 var arrFilter=[];
                 arrFilter.push(new sap.ui.model.Filter("Banfn", sap.ui.model.FilterOperator.EQ, dataOrder.Banfn.toString())); 
@@ -214,6 +214,30 @@ sap.ui.define([
                 });
                 var auxOrderModel = new sap.ui.model.json.JSONModel(texts); 
                 this.getView().setModel(auxOrderModel,"ListTextModel");
+            }
+            else if(tab == "approvers"){
+                var entidad = "/release_strategy_reqSet";
+                var texts;
+                var arrFilter=[];
+                arrFilter.push(new sap.ui.model.Filter("Banfn", sap.ui.model.FilterOperator.EQ, dataOrder.Banfn.toString())); 
+                await this.getEntityV2(modelo,entidad, arrFilter).then(value=>{
+                    texts = value.results;
+                    if (texts.length > 0) {
+                        for (let index = 0; index < texts.length; index++) {
+                           
+                            var Relstrtx = "Denominación de estrategia: " + texts[index].RelStrTx +"<br>";
+                            var CodLib = "Código liberación: " + texts[index].RelCode +"<br>";
+                            var approve = texts[index].Libero === "true"? "<strong style=\"color:green;\">Si</strong>Si":"<strong style=\"color:#B71542;\">No</strong>";
+                            var element = "Denominación grupo de liberación: " + texts[index].RelGrpTx +" <br>"+ Relstrtx + CodLib +"Liberó: " + approve;
+                            texts[index].text= element;
+                        }
+                    }
+
+                }).catch((e)=>{
+                    sap.ui.core.BusyIndicator.hide();
+                });
+                var auxOrderModel = new sap.ui.model.json.JSONModel(texts); 
+                this.getView().setModel(auxOrderModel,"approversNodel");
             }
             sap.ui.core.BusyIndicator.hide()
         },
